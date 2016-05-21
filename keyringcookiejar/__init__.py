@@ -6,24 +6,29 @@ class KeyringCookieJar(CookieJar):
   DEFAULT_SERVICE = "Python Keyring Cookie Jar"
 
   def __init__(self, svc=DEFAULT_SERVICE, acct=None,
-      delayload=False, policy=None):
+      delayload=False, policy=None,
+      ignore_discard=False, ignore_expires=False):
 
     CookieJar.__init__(self, policy)
     self.svc = "Cookies for " + svc
     self.acct = getpass.getuser() if acct is None else acct
     self.delayload = bool(delayload)
 
-    if not self.delayload: self.load()
+    if not self.delayload: self.load(ignore_discard, ignore_expires)
 
 
   def clear(self, domain=None, path=None, name=None):
-    super(KeyringCookieJar, self).clear(domain, path, name)
+    if issubclass(CookieJar, object):
+      super(KeyringCookieJar, self).clear(domain, path, name)
+    else:
+      # old-style class in Python 2
+      CookieJar.clear(self, domain, path, name)
     self.nuke()
     self.save()
 
 
   def nuke(self):
-    self.delete_password(self.svc, self.acct)
+    keyring.delete_password(self.svc, self.acct)
 
 
   def save(self, ignore_discard=False, ignore_expires=False):
