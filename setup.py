@@ -6,10 +6,6 @@ setup(
   description = 'Store cookies using the keyring package',
   author = 'Tom Maher',
   author_email = 'tmaher@pw0n.me',
-  url = 'https://github.com/tmaher/keyringcookiejar',
-  download_url = 'https://github.com/tmaher/keyringcookiejar/tarball/0.1', # I'll explain this in a second
-  install_requires =[
-    'keyring',
-  ],
-  classifiers = [],
+  url = 'https://github.com/PARC/keyringcookiejar',
+  install_requires =['keyring']
 )
